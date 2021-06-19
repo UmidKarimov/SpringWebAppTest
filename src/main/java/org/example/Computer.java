@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Computer {
     private int id;
+
     private MusicPlayer musicPlayer;
 
     @Autowired
@@ -14,11 +15,11 @@ public class Computer {
         this.id = 1;
     }
 
-    @Override
-    public String toString() {
+    public String toString(GenresMusic genresMusic) {
+        musicPlayer.playMusic(genresMusic);
         return "Computer{" +
                 "id=" + id +
-                ", musicPlayer=" + musicPlayer.getName() + musicPlayer.getMusicList() +
+                ", musicPlayer=" + (musicPlayer==null) +
                 '}';
     }
 }

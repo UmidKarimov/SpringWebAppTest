@@ -1,41 +1,24 @@
 package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+
 @Component
 public class MusicPlayer {
 
-    private ClassicalMusic Cmusic;
-    private RockMusic Rmusic;
-
+    private Music music1;
+    private Music music2;
+    @Value("${musicPlayer.name}")
     private String name;
-
-    private byte volume;
-
-    private List<Music> musicList = new ArrayList<>();
-
-    public List<Music> getMusicList() {
-        return musicList;
-    }
-
-    public void printMusicList() {
-        for (Music list:this.musicList) {
-            System.out.println(list.getSong());
-        }
-    }
-
-    public void setMusicList(List<Music> musicList) {
-        this.musicList = musicList;
-    }
-@Autowired
-    public MusicPlayer(ClassicalMusic musicC, RockMusic musicR) {
-        this.Cmusic = musicC;
-        this.Rmusic = musicR;
-
-    }
+    @Value("${musicPlayer.volume}")
+    private String volume;
 
     public String getName() {
         return name;
@@ -45,17 +28,31 @@ public class MusicPlayer {
         this.name = name;
     }
 
-    public byte getVolume() {
+    public String getVolume() {
         return volume;
     }
 
-    public void setVolume(byte volume) {
+    public void setVolume(String volume) {
         this.volume = volume;
     }
 
-    public void playMusic() {
-        System.out.println("Playing " + Cmusic.getSong());
-        System.out.println("Playing " + Rmusic.getSong());
+    @Autowired
+    public MusicPlayer(ClassicalMusic classicalMusic, RockMusic rockMusic) {
+        this.music1 = classicalMusic;
+        this.music2 = rockMusic;
+    }
+
+    public void playMusic(GenresMusic genresMusic) {
+        Random random = new Random();
+        int randomNum = random.nextInt(3);
+        String forPrint;
+
+        if (genresMusic == GenresMusic.CLASSICAL)
+            forPrint = music1.getSongs().get(randomNum);
+        else
+            forPrint = music2.getSongs().get(randomNum);
+
+        System.out.println(forPrint);
 
     }
 
